@@ -1,0 +1,69 @@
+<div class="form-container">
+  <!-- your existing sections here -->
+   <section class="form-section">
+  <p>Name:</p>
+  <input type="text" [formControl]="nameControl" placeholder="Enter your name">
+</section>
+
+<section class="form-section">
+  <p>Age:</p>
+  <select [formControl]="ageControl">
+    <option value="">Select age</option>
+    @for(age of ages; track $index) {
+ <option [value]="age">{{ age }}</option>
+    }
+   
+  </select>
+</section>
+
+<section class="form-section">
+  <p>Gender:</p>
+  <select [formControl]="genderControl">
+    <option value="">Select gender</option>
+    <option value="Male">Male</option>
+    <option value="Female">Female</option>
+    <option value="Other">Other</option>
+  </select>
+</section>
+
+<section class="form-section">
+  <p>Email:</p>
+  <input type="email" [formControl]="emailControl" placeholder="example@mail.com">
+  @if (emailControl.invalid && emailControl.touched){
+    <small class="error">
+    Please enter a valid email address.
+  </small>
+  }
+</section>
+
+<section class="form-section">
+  <p>Phone:</p>
+  <input type="text" maxlength="10" [formControl]="phoneControl" placeholder="10-digit phone">
+  @if(phoneControl.invalid && phoneControl.touched) {
+  <small class="error">
+    Phone number must be 10 digits.
+  </small>
+  }
+
+</section>
+
+<section class="form-section">
+  <p>Password:</p>
+  <input type="password" [formControl]="passControl" placeholder="Enter password">
+</section>
+
+<section class="form-section">
+  <p>Repeat Password:</p>
+  <input type="password" [formControl]="repeatPassControl" placeholder="Repeat password">
+  @if(repeatPassControl.invalid && repeatPassControl.touched) {
+    <small class="error">
+    Passwords do not match.
+  </small>
+  }
+  
+</section>
+
+<button [disabled]="!isFormValid()" (click)="onSignup()">Submit</button>
+
+
+</div>

@@ -1,0 +1,14 @@
+<div class="login-container">
+
+  <p class="label">Email:</p>
+  <input type="email" [formControl]="emailControl" placeholder="example@mail.com" class="input-box">
+  @if (emailControl.invalid && emailControl.touched){
+    <small class="error">Please enter a valid email address.</small>
+  }
+
+  <p class="label">Password:</p>
+  <input type="password" [formControl]="passControl" placeholder="Enter password" class="input-box">
+
+  <button class="btn" [disabled]="!isFormValid()" (click)="onLogin()">Submit</button>
+
+</div>

@@ -1,0 +1,69 @@
+<div class="bus-container horizontal">
+
+  <!-- Legends -->
+  <div class="legend">
+    <div><span class="seat demo available"></span> Available</div>
+    <div><span class="seat demo booked"></span> Booked</div>
+    <div><span class="seat demo selected"></span> Selected</div>
+  </div>
+
+  <!-- Bus -->
+  <div class="bus-body">
+
+    <!-- Driver -->
+    <div class="driver">🧑‍✈️</div>
+
+    <!-- Seat columns -->
+    <div class="seat-layout-horizontal">
+
+      @for (row of seatRows; track $index) {
+        <div class="seat-column">
+
+          <!-- Left seats -->
+          <div class="seat-pair vertical">
+            @for (seat of row.left; track seat) {
+              <div
+                class="seat"
+                [class.booked]="isBooked(seat)"
+                [class.selected]="isSelected(seat)"
+                (click)="toggleSeat(seat)">
+                {{ seat }}
+              </div>
+            }
+          </div>
+
+          <!-- Aisle -->
+          <div class="aisle-vertical"></div>
+
+          <!-- Right seats -->
+          <div class="seat-pair vertical">
+            @for (seat of row.right; track seat) {
+              <div
+                class="seat"
+                [class.booked]="isBooked(seat)"
+                [class.selected]="isSelected(seat)"
+                (click)="toggleSeat(seat)">
+                {{ seat }}
+              </div>
+            }
+          </div>
+
+        </div>
+      }
+
+      <!-- Last column (5 seats) -->
+      <div class="seat-column last-column">
+        @for (seat of lastRowSeats; track seat) {
+          <div
+            class="seat"
+            [class.booked]="isBooked(seat)"
+            [class.selected]="isSelected(seat)"
+            (click)="toggleSeat(seat)">
+            {{ seat }}
+          </div>
+        }
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,98 @@
+/* Page Background */
+:host {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    //background: linear-gradient(135deg, #e8f0ff, #f9fbff);
+    font-family: 'Inter', sans-serif;
+}
+
+/* Form Container */
+.form-container {
+    width: 100%;
+    max-width: 420px;
+    background: #ffffff;
+    padding: 40px 35px;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+    transition: 0.3s ease;
+}
+
+/* Section Styling */
+.form-section {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 18px;
+}
+
+/* Labels */
+.form-section p {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #444;
+}
+
+/* Inputs & Select */
+input,
+select {
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    transition: all 0.25s ease;
+    outline: none;
+    background-color: #fafafa;
+}
+
+/* Focus Effect */
+input:focus,
+select:focus {
+    border-color: #4f7cff;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(79, 124, 255, 0.15);
+}
+
+/* Error Text */
+.error {
+    font-size: 12px;
+    margin-top: 4px;
+    color: #e63946;
+}
+
+/* Button */
+button {
+    width: 100%;
+    margin-top: 15px;
+    padding: 13px;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    background: linear-gradient(135deg, #4f7cff, #5f8dff);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+/* Hover Effect */
+button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(79, 124, 255, 0.3);
+}
+
+/* Disabled Button */
+button:disabled {
+    background: #c5c5c5;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .form-container {
+        margin: 20px;
+        padding: 30px 20px;
+    }
+}

@@ -1,0 +1,63 @@
+/* Centering the form */
+.login-container {
+    width: 340px;
+    margin: 80px auto;
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: Poppins, sans-serif;
+}
+
+.label {
+    font-size: 15px;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.input-box {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    border: 1.8px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.25s ease;
+}
+
+.input-box:focus {
+    border-color: #6a5acd;
+    /* Light purple (Bus App theme) */
+    outline: none;
+}
+
+.error {
+    color: #e63946;
+    font-size: 12px;
+    margin-top: -5px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.btn {
+    width: 100%;
+    padding: 11px;
+    background: #6a5acd;
+    /* Purple */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.btn:hover {
+    background: #5a4acb;
+}
+
+.btn:disabled {
+    background: #b8aef5;
+    cursor: not-allowed;
+}

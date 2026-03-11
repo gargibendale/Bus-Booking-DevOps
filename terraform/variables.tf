@@ -1,0 +1,23 @@
+variable "aws_region" {
+  description = "AWS region to deploy resources"
+  type        = string
+  default     = "ap-south-1"
+}
+
+variable "instance_type" {
+  description = "EC2 instance type"
+  type        = string
+  default     = "t3.micro"
+}
+
+variable "app_name" {
+  description = "Application name used for tagging resources"
+  type        = string
+  default     = "bus-booking"
+}
+
+variable "key_pair_name" {
+  description = "Name of the AWS key pair for SSH access"
+  type        = string
+  default     = "bus-booking-key"
+}

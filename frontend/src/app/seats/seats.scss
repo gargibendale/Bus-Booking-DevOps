@@ -1,0 +1,113 @@
+.bus-container {
+    width: 70%;
+    padding: 16px;
+    background: #f7f9fc;
+    border-radius: 14px;
+    color: #333;
+}
+
+/* Legend */
+.legend {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+    font-size: 13px;
+}
+
+.legend div {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.seat.demo {
+    width: 18px;
+    height: 18px;
+    cursor: default;
+}
+
+/* Bus body */
+.bus-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+}
+
+/* Driver */
+.driver {
+    background: #e3e7ed;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/* Horizontal seat layout */
+.seat-layout-horizontal {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+}
+
+/* Make left seats, aisle, right seats stack vertically */
+.seat-column {
+    display: flex;
+    flex-direction: column;
+    /* 👈 key change */
+    align-items: center;
+    gap: 8px;
+}
+
+/* Seat groups */
+.seat-pair.vertical {
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    gap: 6px;
+}
+
+/* Turn aisle into a horizontal divider */
+.aisle-vertical {
+    width: 32px;
+    /* was height */
+    height: 8px;
+    /* was width */
+}
+
+/* Seat */
+.seat {
+    width: 38px;
+    height: 38px;
+    background: #ffffff;
+    border: 1px solid #d0d7e2;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.seat:hover {
+    background: #eef3fb;
+}
+
+/* Booked */
+.seat.booked {
+    background: #e0e0e0;
+    color: #888;
+    cursor: not-allowed;
+}
+
+/* Selected */
+.seat.selected {
+    background: #90caf9;
+    border-color: #42a5f5;
+    color: #0d47a1;
+}
+
+/* Last column */
+.last-column {
+    display: grid;
+    grid-template-rows: repeat(5, 1fr);
+    gap: 6px;
+}

@@ -1,0 +1,83 @@
+<div class="ticket-details-container">
+  @if (loading) {
+    <div class="state-text">Loading ticket details…</div>
+  }
+
+  @if (ticket && !loading) {
+
+    <div class="details-card">
+
+      <h2>{{ ticket.route }}</h2>
+
+      <div class="section">
+        <p>Ticket ID: {{ ticket.ticket_id }}</p>
+        <p>Status: {{ ticket.status }}</p>
+        <p>Travel Date: {{ ticket.travel_date | date:'dd MMM yyyy' }}</p>
+        <p>Booking Time: {{ ticket.booking_time | date:'dd MMM yyyy, hh:mm a' }}</p>
+        <p>Amount Paid: ₹{{ ticket.amt_paid }}</p>
+      </div>
+
+      <h2>Bus Info</h2>
+
+      <div class="section">
+        <p>From: {{ ticket.bus?.start }}</p>
+        <p>To: {{ ticket.bus?.end }}</p>
+        <p>DEP: {{ formatTime(ticket.bus?.start_time) }}</p>
+        <p>ETA: {{ formatTime(ticket.bus?.end_time) }}</p>
+
+      </div>
+
+
+      <div class="section">
+        <h3>Passengers</h3>
+
+        @if (ticket.passengers?.length === 0) {
+          <p>No passengers found.</p>
+        }
+
+        @for (p of ticket.passengers; track $index) {
+          <div class="passenger-card">
+            <p>Name: {{ p.name }}</p>
+            <p>Age: {{ p.age }}</p>
+            <p>Gender: {{ p.gender }}</p>
+            <p>Seat: {{ p.seat }}</p>
+          </div>
+        }
+      </div>
+
+      <!-- Cancel Button -->
+<div class="actions">
+<button 
+  class="cancel-btn" 
+  (click)="showCancelModal = true"
+  [disabled]="ticket.status === 'Cancelled' || isPastTravelDate()">
+  Cancel Ticket
+</button>
+
+</div>
+
+<!-- Confirmation Modal -->
+@if (showCancelModal) {
+  <div class="modal-overlay">
+    <div class="modal">
+      <h3>Cancel Ticket?</h3>
+      <p>Are you sure you want to cancel this ticket? This action cannot be undone.</p>
+
+      <div class="modal-actions">
+        <button class="btn-secondary" (click)="showCancelModal = false">
+          No
+        </button>
+        <button class="btn-danger" (click)="confirmCancel()">
+          Yes, Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+
+    </div>
+  }
+
+</div>
+

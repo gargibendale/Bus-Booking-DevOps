@@ -1,0 +1,32 @@
+<main>
+  <header class="brand-name">
+    <a [routerLink]="['/']">
+      <img class="brand-logo" src="assets/bus-logo.png" alt="logo" aria-hidden="true" />
+      <h2 class="app-name">Raahi</h2>
+    </a>
+
+    <div class="login-signup">
+      @if (userService.isLoggedIn$ | async) {
+         <a routerLinkActive="router-link-active">
+          <button class="primary" type="button" (click)="accessTicketHistory()">My Tickets</button>
+        </a>
+        <a routerLinkActive="router-link-active">
+          <button class="primary" type="button" (click)="accessProfile()">Profile</button>
+        </a>
+        <button class="primary" (click)="logout()">Logout</button>
+      } @else {
+        <a [routerLink]="['/login']" routerLinkActive="router-link-active">
+          <button class="primary" type="button">Login</button>
+        </a>
+        <a [routerLink]="['/signup']" routerLinkActive="router-link-active">
+          <button class="primary" type="button">Signup</button>
+        </a>
+      }
+    </div>
+  </header>
+
+  <section class="content">
+    <router-outlet />
+  </section>
+</main>
+

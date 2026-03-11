@@ -1,0 +1,100 @@
+.bus-search-result {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bus-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+/* LEFT SECTION */
+.bus-left {
+    flex: 2;
+}
+
+.route {
+    margin: 0 0 10px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.timing {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.time {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.place {
+    display: block;
+    font-size: 13px;
+    color: #666;
+}
+
+.duration {
+    text-align: center;
+    font-size: 13px;
+    color: #555;
+}
+
+.duration .line {
+    width: 60px;
+    height: 2px;
+    background: #ddd;
+    margin: 4px auto;
+}
+
+/* MIDDLE SECTION */
+.bus-middle {
+    flex: 1;
+    text-align: center;
+}
+
+.seats {
+    color: #0a8f08;
+    font-weight: 600;
+}
+
+.date {
+    font-size: 13px;
+    color: #777;
+}
+
+/* RIGHT SECTION */
+.bus-right {
+    flex: 1;
+    text-align: right;
+}
+
+.price {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.details-btn {
+    display: inline-block;
+    padding: 8px 16px;
+    background: #7048e8;
+    color: #fff;
+    border-radius: 6px;
+    font-size: 14px;
+    text-decoration: none;
+    transition: background 0.2s ease;
+}
+
+.details-btn:hover {
+    background: #5b36c7;
+}

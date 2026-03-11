@@ -1,0 +1,76 @@
+@if (busSearchResult || true) {
+  <div class="booking-page">
+    @if (bookingSuccess) {
+      <div class="success-banner">
+        {{ successMessage }}
+      </div>
+    }
+    <!-- Seat Layout Section -->
+    <section class="seat-section">
+      <h2>Select Seats</h2>
+      <app-seats
+        [bookedSeats]="bookedSeats"
+        (seatsSelected)="onSeatsSelected($event)">
+      </app-seats>
+    </section>
+    <!-- Passenger Details Section -->
+    @if (selectedSeats.length > 0) {
+      <section class="passenger-section">
+        <h2>Passenger Details</h2>
+        <form [formGroup]="passengerForm">
+          <div formArrayName="passengers">
+            @for (passenger of passengers.controls; track passenger; let i = $index) {
+              <div
+                class="passenger-card"
+                [formGroupName]="i">
+                <div class="seat-badge">
+                  Seat {{ selectedSeats[i] }}
+                </div>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" formControlName="name" placeholder="Passenger name">
+                  </div>
+                  <div class="form-group">
+                    <label>Age</label>
+                    <input type="number" formControlName="age" placeholder="Age">
+                  </div>
+                  <div class="form-group">
+                    <label>Gender</label>
+                    <select formControlName="gender">
+                      <option value="">Select</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Transgender">Transgender</option>
+                    </select>
+                    <button type="button"
+        class="remove-btn"
+        (click)="removePassenger(i)">
+  Remove
+</button>
+
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </form>
+        <!-- Booking Summary -->
+        <div class="summary">
+          <div>
+            <strong>Seats:</strong> {{ selectedSeats.join(', ') }}
+          </div>
+          <div>
+            <strong>Amount:</strong> {{ selectedSeats.length * price }}
+          </div>
+          <button
+            class="book-btn"
+            [disabled]="passengerForm.invalid"
+            (click)="bookTickets()">
+            Book Tickets
+          </button>
+        </div>
+      </section>
+    }
+  </div>
+}

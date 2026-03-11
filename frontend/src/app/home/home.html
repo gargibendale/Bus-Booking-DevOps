@@ -1,0 +1,45 @@
+
+<section class="search-input">
+      <form (ngSubmit)="onSearch()">
+        <!-- Dropdown for 'From' location -->
+        <select id="fromLocation" class="primary" [(ngModel)]="fromLocation" name="fromLocation" >
+          <option value="">From</option>
+          <option value="Mumbai">Mumbai</option>
+          <option value="Pune">Pune</option>
+          <option value="Bangalore">Bangalore</option>
+          <option value="Nagpur">Nagpur</option>
+<option value="Kolhapur">Kolhapur</option>
+<option value="Sambhajinagar">Sambhajinagar</option>
+<option value="Solapur">Solapur</option>
+        </select>
+
+        <!-- Dropdown for 'To' location -->
+        <select id="toLocation" class="primary" [(ngModel)]="toLocation" name="toLocation" >
+          <option value="">To</option>
+          <option value="Mumbai">Mumbai</option>
+          <option value="Nashik">Nashik</option>
+          <option value="Delhi">Delhi</option>
+          <option value="Bangalore">Bangalore</option>
+          <option value="Amravati">Amravati</option>
+<option value="Shirdi">Shirdi</option>
+<option value="Latur">Latur</option>
+        </select>
+        
+        <!-- Date input field -->
+<input
+  type="date"
+  class="primary"
+  name="travelDate"
+  [(ngModel)]="travelDate"
+  [min]="minDate"
+  [max]="maxDate"
+/>
+        
+        <button class="primary" type="submit">Search</button>
+      </form>
+    </section>
+    <section class="results">
+      @for(busSearchResult of busSearchResults; track $index) {
+<app-bus [busSearchResult]="busSearchResult"></app-bus>
+      }
+        </section>

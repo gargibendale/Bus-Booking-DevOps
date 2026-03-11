@@ -1,0 +1,46 @@
+<div class="bus-search-result">
+  <!-- LEFT: Bus & Route -->
+  <div class="bus-left">
+    <h3 class="route">{{ busSearchResult().bus.route }}</h3>
+
+    <div class="timing">
+      <div>
+        <span class="time">{{ busSearchResult().bus.start_time }}</span>
+        <span class="place">{{ busSearchResult().bus.start }}</span>
+      </div>
+
+      <div class="duration">
+        <span>{{ formatDuration(busSearchResult().bus.duration) }}</span>
+        <div class="line"></div>
+      </div>
+
+      <div>
+        <span class="time">{{ busSearchResult().bus.end_time }}</span>
+        <span class="place">{{ busSearchResult().bus.end }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MIDDLE: Availability -->
+  <div class="bus-middle">
+    <p class="seats">
+      {{ busSearchResult().schedule.available_seats }} Seats Left
+    </p>
+    <p class="date">
+      {{ busSearchResult().schedule.travel_date | date }}
+    </p>
+  </div>
+
+  <!-- RIGHT: Price & CTA -->
+  <div class="bus-right">
+    <p class="price">₹{{ busSearchResult().bus.price }}</p>
+    <a
+      class="details-btn"
+      [routerLink]="['/details', busSearchResult().bus.bus_id]"
+      [queryParams]="{ travelDate: busSearchResult().schedule.travel_date
+  }"
+    >
+      Book Tickets
+    </a>
+  </div>
+</div>
