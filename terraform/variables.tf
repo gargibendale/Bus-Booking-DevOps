@@ -21,3 +21,40 @@ variable "key_pair_name" {
   type        = string
   default     = "bus-booking-key"
 }
+
+variable "github_pat" {
+  description = "GitHub Personal Access Token"
+  type        = string
+  sensitive   = true
+}
+
+variable "secret_key" {
+  type      = string
+  sensitive = true
+}
+
+variable "algorithm" {
+  type = string
+}
+
+variable "access_token_expire_minutes" {
+  type = string
+}
+
+variable "db_host" {
+  type = string
+}
+
+variable "postgres_user" {
+  type      = string
+  sensitive = true
+}
+
+variable "postgres_password" {
+  type      = string
+  sensitive = true
+}
+
+variable "postgres_db" {
+  type = string
+}

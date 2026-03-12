@@ -111,6 +111,60 @@ resource "aws_security_group" "app_sg" {
   }
 }
 
+resource "aws_secretsmanager_secret" "backend_env" {
+  name = "bus-booking/backend-env-v3"
+  recovery_window_in_days = 0  # allows force-delete on future terraform destroy
+}
+
+resource "aws_secretsmanager_secret_version" "backend_env" {
+  secret_id = aws_secretsmanager_secret.backend_env.id
+
+  # Store all your backend .env values as a JSON object
+  secret_string = jsonencode({
+  SECRET_KEY                  = var.secret_key
+  ALGORITHM                   = var.algorithm
+  ACCESS_TOKEN_EXPIRE_MINUTES = var.access_token_expire_minutes
+  DB_HOST                     = var.db_host
+  POSTGRES_USER               = var.postgres_user
+  POSTGRES_PASSWORD           = var.postgres_password
+  POSTGRES_DB                 = var.postgres_db
+})
+}
+
+# Create an IAM role that EC2 can assume
+resource "aws_iam_role" "ec2_role" {
+  name = "bus-booking-ec2-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action    = "sts:AssumeRole"
+      Effect    = "Allow"
+      Principal = { Service = "ec2.amazonaws.com" }
+    }]
+  })
+}
+
+# Allow that role to read your specific secret
+resource "aws_iam_role_policy" "secrets_policy" {
+  role = aws_iam_role.ec2_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect   = "Allow"
+      Action   = "secretsmanager:GetSecretValue"
+      Resource = aws_secretsmanager_secret.backend_env.arn
+    }]
+  })
+}
+
+# Attach the role to an instance profile (this is what EC2 actually uses)
+resource "aws_iam_instance_profile" "ec2_profile" {
+  name = "bus-booking-ec2-profile"
+  role = aws_iam_role.ec2_role.name
+}
+
 # ── EC2 INSTANCE ─────────────────────────────────────────────
 
 # Fetch the latest Ubuntu 22.04 AMI ID automatically for ap-south-1
@@ -146,9 +200,13 @@ resource "aws_instance" "app_server" {
     encrypted   = false     # ⚠️ Should be true in production
   }
 
+  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
+
   # user_data: A shell script that runs once when the instance first boots
   # We use it to install Docker and pull/run your containers automatically
-  user_data = file("${path.module}/user_data.sh")
+  user_data = templatefile("${path.module}/user_data.sh", {
+  github_pat = var.github_pat
+})
 
   tags = {
     Name = "${var.app_name}-server"
