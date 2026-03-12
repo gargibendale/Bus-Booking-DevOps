@@ -33,7 +33,7 @@ services:
     container_name: angular_frontend
     restart: always
     ports:
-      - "4200:80"
+      - "80:80"
     depends_on:
       - backend # Start backend before frontend
 
