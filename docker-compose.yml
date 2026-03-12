@@ -1,18 +1,14 @@
 services:
   db:
-    image: dhi.io/postgres:18-alpine3.22-dev # Official lightweight Postgres image
+    image: postgres:18-alpine3.23
     container_name: postgres_db
     restart: always
     env_file:
       - ./backend/.env
-    # environment:
-    #   POSTGRES_USER: ${DB_USER} # Pulled from backend/.env via env_file below
-    #   POSTGRES_PASSWORD: ${DB_PASSWORD}
-    #   POSTGRES_DB: ${DB_NAME}
     ports:
       - "5433:5432" # Expose postgres locally for debugging
     volumes:
-      - postgres_data:/var/lib/postgresql/data # Persist DB data across restarts
+      - postgres_data:/var/lib/postgresql # Persist DB data across restarts
 
   backend:
     build:
@@ -22,9 +18,7 @@ services:
     env_file:
       - ./backend/.env # Load your .env file into the container
     environment:
-      DB_HOST:
-        db # Overrides whatever DB_HOST is in .env
-        # 'db' = the postgres service name on Docker's internal network
+      DB_HOST: db
       # Note: 'db' here refers to the service name above, not localhost —
       # Docker Compose creates an internal network where services find
       # each other by service name
