@@ -89,6 +89,14 @@ resource "aws_security_group" "app_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    description = "Frontend"
+    from_port   = 4200
+    to_port     = 4200
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   # Allow traffic to FastAPI backend (port 8000)
   ingress {
     description = "FastAPI backend"
