@@ -46,6 +46,7 @@ docker run --rm \
     string(credentialsId: 'TF_VAR_postgres_user',     variable: 'POSTGRES_USER'),
     string(credentialsId: 'TF_VAR_postgres_password', variable: 'POSTGRES_PASSWORD'),
     string(credentialsId: 'TF_VAR_secret_key',        variable: 'SECRET_KEY'),
+    string(credentialsId: 'TF_VAR_trusted_ssh_cidr',  variable: 'TRUSTED_SSH_CIDR')
 ]) {
                 script {
                     sh '''
@@ -65,7 +66,8 @@ docker run --rm \
     -var "secret_key=${SECRET_KEY}" \
     -var "algorithm=HS256" \
     -var "access_token_expire_minutes=150" \
-    -var "postgres_db=busapp"
+    -var "postgres_db=busapp" \
+    -var "trusted_ssh_cidr=${TRUSTED_SSH_CIDR}"
 '''
                 }
             }
