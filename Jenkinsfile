@@ -61,34 +61,32 @@ pipeline {
         // STAGE 3: Terraform Plan
         // ─────────────────────────────────────────
         stage('Terraform Plan') {
-            steps {
-                script {
-                    echo "Running Terraform plan..."
+    steps {
+        script {
+            echo "Running Terraform plan..."
 
-                    // Debug: show what Jenkins actually has
             sh 'pwd'
             sh 'ls -la'
-            sh 'ls -la ${TF_DIR} || echo "terraform folder not found!"'
+            sh "ls -la ${TF_DIR}"
 
-                    // Run terraform init + plan inside a terraform Docker container
-                    // This avoids needing Terraform installed on Jenkins itself
-                    sh """
-                        docker run --rm \
-                            -v ${WORKSPACE}/${TF_DIR}:/workspace \
-                            -w /workspace \
-                            hashicorp/terraform:latest \
-                            init -input=false
-                    """
+            sh """
+                docker run --rm \
+                -v ${WORKSPACE}/${TF_DIR}:/workspace \
+                -w /workspace \
+                hashicorp/terraform:latest \
+                init -input=false
+            """
 
-                    sh """
-                       docker run --rm \
--v ${WORKSPACE}/terraform:/workspace \
--w /workspace \
-hashicorp/terraform:latest init
-                    """
-                }
-            }
+            sh """
+                docker run --rm \
+                -v ${WORKSPACE}/${TF_DIR}:/workspace \
+                -w /workspace \
+                hashicorp/terraform:latest \
+                plan -input=false
+            """
         }
+    }
+}
     }
 
     // ─────────────────────────────────────────
