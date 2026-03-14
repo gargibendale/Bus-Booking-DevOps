@@ -191,13 +191,8 @@ Please do the following:
 1. Explain each vulnerability in simple terms — what is the risk and what could an attacker do if it were exploited?
 2. Rewrite only the affected blocks in my main.tf to fix each vulnerability, following AWS security best practices.
 3. Summarize the before vs. after changes in a table format.
-Ensure the fixed code has zero CRITICAL or HIGH severity issues when re-scanned."*
-
-**Identified Risk:**
-- Security group rule allowed unrestricted inbound SSH access (`0.0.0.0/0` on port 22), meaning any machine on the internet could attempt to connect to the EC2 instance.
-
-**AI-Recommended Fix:**
-- Restrict the SSH ingress rule CIDR to a known, trusted IP address (e.g., the developer's static IP) instead of `0.0.0.0/0`.
+Ensure the fixed code has zero CRITICAL or HIGH severity issues when re-scanned.
+"*
 
 **Outcome:**
 - The updated Terraform code passed the Trivy scan with zero critical findings on the re-run of the Jenkins pipeline.
