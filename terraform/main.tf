@@ -120,7 +120,7 @@ resource "aws_security_group" "app_sg" {
 }
 
 resource "aws_secretsmanager_secret" "backend_env" {
-  name = "bus-booking/backend-env-v4"
+  name = "bus-booking/backend-env-v5"
   recovery_window_in_days = 0  # allows force-delete on future terraform destroy
 }
 
@@ -175,7 +175,7 @@ resource "aws_iam_instance_profile" "ec2_profile" {
 
 # ── EC2 INSTANCE ─────────────────────────────────────────────
 
-# Fetch the latest Ubuntu 22.04 AMI ID automatically for ap-south-1
+# Fetch the latest Ubuntu 22.04 AMI ID automatically for eu-north-1
 # This avoids hardcoding an AMI ID that might become outdated
 data "aws_ami" "ubuntu" {
   most_recent = true
