@@ -46,18 +46,24 @@ docker run --rm \
     string(credentialsId: 'TF_VAR_postgres_user',     variable: 'POSTGRES_USER'),
     string(credentialsId: 'TF_VAR_postgres_password', variable: 'POSTGRES_PASSWORD'),
     string(credentialsId: 'TF_VAR_secret_key',        variable: 'SECRET_KEY'),
-    string(credentialsId: 'TF_VAR_trusted_ssh_cidr',  variable: 'TRUSTED_SSH_CIDR')
+    string(credentialsId: 'TF_VAR_trusted_ssh_cidr',  variable: 'TRUSTED_SSH_CIDR'),
+    string(credentialsId: 'AWS_ACCESS_KEY_ID',        variable: 'AWS_ACCESS_KEY_ID'),
+    string(credentialsId: 'AWS_SECRET_ACCESS_KEY',    variable: 'AWS_SECRET_ACCESS_KEY')
 ]) {
                 script {
-                    sh '''
+                   sh '''
 docker run --rm \
     -v ${HOST_WORKSPACE}/terraform:/terraform \
     -w /terraform \
+    -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
+    -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
     hashicorp/terraform:latest init
 
 docker run --rm \
     -v ${HOST_WORKSPACE}/terraform:/terraform \
     -w /terraform \
+    -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
+    -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
     hashicorp/terraform:latest plan \
     -var "github_pat=${GITHUB_PAT}" \
     -var "db_host=${DB_HOST}" \
