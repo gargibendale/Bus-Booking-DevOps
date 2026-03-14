@@ -19,7 +19,7 @@ variable "app_name" {
 variable "key_pair_name" {
   description = "Name of the AWS key pair for SSH access"
   type        = string
-  default     = "bus-booking-key"
+  default     = "My-First-Keypair"
 }
 
 variable "github_pat" {

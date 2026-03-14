@@ -15,6 +15,9 @@ services:
     container_name: angular_frontend
     restart: always
     ports:
-      - "4200:80"
+      - "80:80"
+      #when running using terraform:
+      #when running locally:
+      #- "4200:80"
     depends_on:
       - backend
