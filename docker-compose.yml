@@ -1,41 +1,20 @@
 services:
-  db:
-    image: postgres:18-alpine3.23
-    container_name: postgres_db
+  backend:
+    build:
+      context: ./backend
+    container_name: fastapi_backend
     restart: always
     env_file:
       - ./backend/.env
     ports:
-      - "5433:5432" # Expose postgres locally for debugging
-    volumes:
-      - postgres_data:/var/lib/postgresql # Persist DB data across restarts
-
-  backend:
-    build:
-      context: ./backend # Build using backend/Dockerfile
-    container_name: fastapi_backend
-    restart: always
-    env_file:
-      - ./backend/.env # Load your .env file into the container
-    environment:
-      DB_HOST: db
-      # Note: 'db' here refers to the service name above, not localhost —
-      # Docker Compose creates an internal network where services find
-      # each other by service name
-    ports:
       - "8000:8000"
-    depends_on:
-      - db # Start db container before backend
 
   frontend:
     build:
-      context: ./frontend # Build using frontend/Dockerfile
+      context: ./frontend
     container_name: angular_frontend
     restart: always
     ports:
       - "80:80"
     depends_on:
-      - backend # Start backend before frontend
-
-volumes:
-  postgres_data: # Named volume so DB data survives container restarts
+      - backend

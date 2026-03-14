@@ -14,6 +14,8 @@ FROM nginx:alpine
 
 COPY --from=builder /app/dist/bus-booking/browser /usr/share/nginx/html
 
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 EXPOSE 80
 
 # Use official Node image as base
