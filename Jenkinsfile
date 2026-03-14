@@ -63,20 +63,19 @@ pipeline {
         stage('Terraform Plan') {
     steps {
         script {
-            echo "Running Terraform plan..."
 
             sh """
-                docker run --rm \
-                -v ${WORKSPACE}:/workspace \
-                -w /workspace/terraform \
-                hashicorp/terraform:latest init -input=false
+            docker run --rm \
+            -v ${WORKSPACE}:/workspace \
+            -w /workspace/terraform \
+            hashicorp/terraform:latest init
             """
 
             sh """
-                docker run --rm \
-                -v ${WORKSPACE}:/workspace \
-                -w /workspace/terraform \
-                hashicorp/terraform:latest plan -input=false
+            docker run --rm \
+            -v ${WORKSPACE}:/workspace \
+            -w /workspace/terraform \
+            hashicorp/terraform:latest plan
             """
         }
     }
