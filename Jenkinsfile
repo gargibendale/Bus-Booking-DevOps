@@ -65,24 +65,18 @@ pipeline {
         script {
             echo "Running Terraform plan..."
 
-            sh 'pwd'
-            sh 'ls -la'
-            sh "ls -la ${TF_DIR}"
-
             sh """
                 docker run --rm \
-                -v ${WORKSPACE}/${TF_DIR}:/workspace \
-                -w /workspace \
-                hashicorp/terraform:latest \
-                init -input=false
+                -v ${WORKSPACE}:/workspace \
+                -w /workspace/terraform \
+                hashicorp/terraform:latest init -input=false
             """
 
             sh """
                 docker run --rm \
-                -v ${WORKSPACE}/${TF_DIR}:/workspace \
-                -w /workspace \
-                hashicorp/terraform:latest \
-                plan -input=false
+                -v ${WORKSPACE}:/workspace \
+                -w /workspace/terraform \
+                hashicorp/terraform:latest plan -input=false
             """
         }
     }
