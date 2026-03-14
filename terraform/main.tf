@@ -23,7 +23,8 @@ resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.1.0/24"   # 256 addresses within the VPC
   availability_zone       = "${var.aws_region}a"
-  map_public_ip_on_launch = true             # Auto-assign public IP to instances
+  # map_public_ip_on_launch = true             # Auto-assign public IP to instances
+  map_public_ip_on_launch = false  # ✅ FIX: Public IPs must be assigned explicitly per resource
 
   tags = {
     Name = "${var.app_name}-public-subnet"
@@ -71,16 +72,15 @@ resource "aws_security_group" "app_sg" {
   description = "Security group for bus booking app"
   vpc_id      = aws_vpc.main.id
 
-  # Allow SSH from anywhere — THIS IS THE INTENTIONAL VULNERABILITY
+  # ✅ FIX: SSH restricted to your specific IP only
   ingress {
-    description = "SSH from anywhere"
+    description = "SSH from trusted IP only"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]   # ⚠️ Should be your IP only, e.g. ["YOUR_IP/32"]
+    cidr_blocks = [var.trusted_ssh_cidr]  # e.g. "203.0.113.10/32" — set in terraform.tfvars
   }
 
-  # Allow HTTP traffic for the Angular frontend (port 80)
   ingress {
     description = "HTTP for frontend"
     from_port   = 80
@@ -97,7 +97,6 @@ resource "aws_security_group" "app_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # Allow traffic to FastAPI backend (port 8000)
   ingress {
     description = "FastAPI backend"
     from_port   = 8000
@@ -106,11 +105,31 @@ resource "aws_security_group" "app_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # Allow all outbound traffic (standard practice)
+  # ✅ FIX: Restrict egress to only necessary outbound ports
+  # HTTPS (443) — for AWS APIs, Docker Hub, package managers
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"            # -1 means all protocols
+    description = "HTTPS outbound"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # HTTP (80) — for package installs (apt, pip)
+  egress {
+    description = "HTTP outbound"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # DNS (53) — required for hostname resolution
+  egress {
+    description = "DNS outbound"
+    from_port   = 53
+    to_port     = 53
+    protocol    = "udp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -200,23 +219,33 @@ resource "aws_instance" "app_server" {
   vpc_security_group_ids = [aws_security_group.app_sg.id]
   key_name               = var.key_pair_name
 
-  # Root volume: the main disk of the EC2 instance
-  # ⚠️  INTENTIONAL VULNERABILITY: encrypted = false (unencrypted disk)
+  # ✅ FIX: Enforce IMDSv2 — require session token for all metadata requests
+  metadata_options {
+    http_tokens                 = "required"   # Blocks unauthenticated IMDS requests
+    http_put_response_hop_limit = 1            # Prevents containers from reaching IMDS
+    http_endpoint               = "enabled"    # Keep IMDS available but secured
+  }
+
+  # ✅ FIX: Encrypted root volume
   root_block_device {
-    volume_size = 20        # GB
+    volume_size = 20
     volume_type = "gp3"
-    encrypted   = false     # ⚠️ Should be true in production
+    encrypted   = true  # Data at rest is now protected by AWS-managed KMS key
   }
 
   iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
 
-  # user_data: A shell script that runs once when the instance first boots
-  # We use it to install Docker and pull/run your containers automatically
   user_data = templatefile("${path.module}/user_data.sh", {
-  github_pat = var.github_pat
-})
+    github_pat = var.github_pat
+  })
 
   tags = {
     Name = "${var.app_name}-server"
   }
+}
+
+# Assign an Elastic IP explicitly to the aws_instance resource
+resource "aws_eip" "app_server" {
+  instance = aws_instance.app_server.id
+  domain   = "vpc"
 }

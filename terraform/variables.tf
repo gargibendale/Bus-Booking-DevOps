@@ -58,3 +58,8 @@ variable "postgres_password" {
 variable "postgres_db" {
   type = string
 }
+
+variable "trusted_ssh_cidr" {
+  description = "Your personal IP in CIDR notation, e.g. 203.0.113.10/32"
+  type        = string
+}
