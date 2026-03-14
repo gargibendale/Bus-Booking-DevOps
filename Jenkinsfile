@@ -29,41 +29,31 @@ pipeline {
         stage('Infrastructure Security Scan') {
             steps {
                 script {
-                    echo "Running Trivy security scan on Terraform files..."
+    echo "Running Trivy security scan on Terraform files..."
 
-                    // Run Trivy as a Docker container to scan terraform/ folder
-                    // --exit-code 1 means: exit with failure if issues found
-                    // --severity HIGH,CRITICAL means: only flag serious issues
-                    // We use || true so Jenkins captures output even on failure
-                    def scanResult = sh(
-                        script: """
-                            docker run --rm \
-                                -v /workspace:/project \
-                                aquasec/trivy:latest config \
-                                --severity HIGH,CRITICAL \
-                                --format table \
-                                --exit-code 1 \
-                                /project/${TF_DIR} || true
-                        """,
-                        returnStdout: true
-                    ).trim()
+    sh """
+        docker run --rm \
+            -v ${WORKSPACE}:/project \
+            aquasec/trivy:latest config \
+            --severity HIGH,CRITICAL \
+            --format table \
+            /project/${TF_DIR} > trivy-report.txt 2>&1 || true
+    """
 
-                    // Print the full scan output to Jenkins console
-                    echo "========== TRIVY SCAN REPORT =========="
-                    echo "${scanResult}"
-                    echo "========================================"
+    def scanResult = readFile('trivy-report.txt').trim()
 
-                    // Check if critical issues were found
-                    if (scanResult.contains("CRITICAL") || scanResult.contains("HIGH")) {
-                        echo "⚠️  SECURITY ISSUES FOUND — Review the report above."
-                        echo "Fix vulnerabilities and re-run the pipeline."
-                        // Save report to a file for reference
-                        writeFile file: 'trivy-report.txt', text: scanResult
-                        error("Pipeline halted: Security vulnerabilities detected.")
-                    } else {
-                        echo "✅ No critical security issues found. Proceeding..."
-                    }
-                }
+    echo "========== TRIVY SCAN REPORT =========="
+    echo "${scanResult}"
+    echo "========================================"
+
+    if (scanResult.contains("CRITICAL") || scanResult.contains("HIGH")) {
+        echo "⚠️  SECURITY ISSUES FOUND — Review the report above."
+        echo "Fix vulnerabilities and re-run the pipeline."
+        error("Pipeline halted: Security vulnerabilities detected.")
+    } else {
+        echo "✅ No critical security issues found. Proceeding..."
+    }
+}
             }
         }
 
@@ -84,7 +74,7 @@ pipeline {
                     // This avoids needing Terraform installed on Jenkins itself
                     sh """
                         docker run --rm \
-                            -v /workspace/${TF_DIR}:/workspace \
+                            -v ${WORKSPACE}/${TF_DIR}:/workspace \
                             -w /workspace \
                             hashicorp/terraform:latest \
                             init -input=false
@@ -92,7 +82,7 @@ pipeline {
 
                     sh """
                        docker run --rm \
--v /workspace/terraform:/workspace \
+-v ${WORKSPACE}/terraform:/workspace \
 -w /workspace \
 hashicorp/terraform:latest init
                     """
