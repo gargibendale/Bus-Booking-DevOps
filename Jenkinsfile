@@ -38,7 +38,7 @@ pipeline {
                     def scanResult = sh(
                         script: """
                             docker run --rm \
-                                -v \${WORKSPACE}:/project \
+                                -v /workspace:/project \
                                 aquasec/trivy:latest config \
                                 --severity HIGH,CRITICAL \
                                 --format table \
@@ -84,18 +84,17 @@ pipeline {
                     // This avoids needing Terraform installed on Jenkins itself
                     sh """
                         docker run --rm \
-                            -v \${WORKSPACE}/${TF_DIR}:/workspace \
+                            -v /workspace/${TF_DIR}:/workspace \
                             -w /workspace \
                             hashicorp/terraform:latest \
                             init -input=false
                     """
 
                     sh """
-                        docker run --rm \
-                            -v \${WORKSPACE}/${TF_DIR}:/workspace \
-                            -w /workspace \
-                            hashicorp/terraform:latest \
-                            plan -input=false
+                       docker run --rm \
+-v /workspace/terraform:/workspace \
+-w /workspace \
+hashicorp/terraform:latest init
                     """
                 }
             }
