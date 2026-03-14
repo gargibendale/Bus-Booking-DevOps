@@ -34,13 +34,13 @@ export class BusService {
     return data ? JSON.parse(data) : null;
   }
 
-  apiUrl = "http://localhost:8000/busapp/search";
-  seatsUrl = "http://localhost:8000/busapp/fetch_seats";
-  bookingUrl = "http://localhost:8000/busapp/book_ticket";
-  lazyLoadUrl = "http://localhost:8000/busapp/search_lazy_load";
-  fetchTicketsUrl = "http://localhost:8000/busapp/tickets";
-  fetchTicketByIDUrl = "http://localhost:8000/busapp/fetch_ticket";
-  cancelTicketUrl = "http://localhost:8000/busapp/cancel_ticket";
+  apiUrl = "/api/busapp/search";
+  seatsUrl = "/api/busapp/fetch_seats";
+  bookingUrl = "/api/busapp/book_ticket";
+  lazyLoadUrl = "/api/busapp/search_lazy_load";
+  fetchTicketsUrl = "/api/busapp/tickets";
+  fetchTicketByIDUrl = "/api/busapp/fetch_ticket";
+  cancelTicketUrl = "/api/busapp/cancel_ticket";
 
   constructor(private http: HttpClient) { }
 
@@ -98,7 +98,7 @@ export class BusService {
 
   getSchedule(busId: number, travelDate: string) {
     return this.http.get<BusSchedule>(
-      `http://localhost:8000/busapp/schedule/${busId}`,
+      `/api/busapp/schedule/${busId}`,
       { params: { travel_date: travelDate } }
     );
   }

@@ -12,10 +12,10 @@ import { throwError } from 'rxjs';
 })
 export class UserService {
 
-  apiUrl = "http://localhost:8000/busapp/sign_up";
-  tokenUrl = "http://localhost:8000/busapp/token";
-  passwordUrl = "http://localhost:8000/busapp/change_password";
-  editProfileUrl = "http://localhost:8000/busapp/update_user/";
+  apiUrl = "/api/busapp/sign_up";
+  tokenUrl = "/api/busapp/token";
+  passwordUrl = "/api/busapp/change_password";
+  editProfileUrl = "/api/busapp/update_user/";
 
   // auth state
   private _isLoggedIn$ = new BehaviorSubject<boolean>(!!localStorage.getItem('access_token'));
@@ -57,7 +57,7 @@ export class UserService {
   }
 
   getMe() {
-    return this.http.get<User>('http://localhost:8000/busapp/me');
+    return this.http.get<User>('/api/busapp/me');
   }
 
   userUpdate(id: string, name: string,
