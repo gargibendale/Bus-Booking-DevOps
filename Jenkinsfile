@@ -41,15 +41,16 @@ docker run --rm \
     steps {
         echo "Initializing Terraform and creating plan..."
         withCredentials([
-            string(credentialsId: 'TF_VAR_github_pat',            secretVariable: 'TF_VAR_github_pat'),
-            string(credentialsId: 'TF_VAR_secret_key',            secretVariable: 'TF_VAR_secret_key'),
-            string(credentialsId: 'TF_VAR_db_host',               secretVariable: 'TF_VAR_db_host'),
-            string(credentialsId: 'TF_VAR_postgres_db',           secretVariable: 'TF_VAR_postgres_db'),
-            string(credentialsId: 'TF_VAR_postgres_user',         secretVariable: 'TF_VAR_postgres_user'),
-            string(credentialsId: 'TF_VAR_postgres_password',     secretVariable: 'TF_VAR_postgres_password'),
-            string(credentialsId: 'TF_VAR_algorithm',             secretVariable: 'TF_VAR_algorithm'),
-            string(credentialsId: 'TF_VAR_access_token_expire_minutes', secretVariable: 'TF_VAR_access_token_expire_minutes'),
-        ]) {
+    string(credentialsId: 'TF_VAR_github_pat',                   variable: 'TF_VAR_github_pat'),
+    string(credentialsId: 'TF_VAR_secret_key',                   variable: 'TF_VAR_secret_key'),
+    string(credentialsId: 'TF_VAR_db_host',                      variable: 'TF_VAR_db_host'),
+    string(credentialsId: 'TF_VAR_postgres_db',                  variable: 'TF_VAR_postgres_db'),
+    string(credentialsId: 'TF_VAR_postgres_user',                variable: 'TF_VAR_postgres_user'),
+    string(credentialsId: 'TF_VAR_postgres_password',            variable: 'TF_VAR_postgres_password'),
+    string(credentialsId: 'TF_VAR_algorithm',                    variable: 'TF_VAR_algorithm'),
+    string(credentialsId: 'TF_VAR_access_token_expire_minutes',  variable: 'TF_VAR_access_token_expire_minutes'),
+]) {
+        {
             script {
                 sh '''
 docker run --rm \
