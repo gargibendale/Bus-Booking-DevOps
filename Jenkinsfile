@@ -38,21 +38,10 @@ docker run --rm \
         }
 
         stage('Terraform Init & Plan') {
-    steps {
-        echo "Initializing Terraform and creating plan..."
-        withCredentials([
-    string(credentialsId: 'TF_VAR_github_pat',                   variable: 'TF_VAR_github_pat'),
-    string(credentialsId: 'TF_VAR_secret_key',                   variable: 'TF_VAR_secret_key'),
-    string(credentialsId: 'TF_VAR_db_host',                      variable: 'TF_VAR_db_host'),
-    string(credentialsId: 'TF_VAR_postgres_db',                  variable: 'TF_VAR_postgres_db'),
-    string(credentialsId: 'TF_VAR_postgres_user',                variable: 'TF_VAR_postgres_user'),
-    string(credentialsId: 'TF_VAR_postgres_password',            variable: 'TF_VAR_postgres_password'),
-    string(credentialsId: 'TF_VAR_algorithm',                    variable: 'TF_VAR_algorithm'),
-    string(credentialsId: 'TF_VAR_access_token_expire_minutes',  variable: 'TF_VAR_access_token_expire_minutes'),
-]) {
-        {
-            script {
-                sh '''
+            steps {
+                echo "Initializing Terraform and creating plan..."
+                script {
+                    sh '''
 docker run --rm \
     -v ${HOST_WORKSPACE}/terraform:/terraform \
     -w /terraform \
@@ -61,20 +50,11 @@ docker run --rm \
 docker run --rm \
     -v ${HOST_WORKSPACE}/terraform:/terraform \
     -w /terraform \
-    -e TF_VAR_github_pat="${TF_VAR_github_pat}" \
-    -e TF_VAR_secret_key="${TF_VAR_secret_key}" \
-    -e TF_VAR_db_host="${TF_VAR_db_host}" \
-    -e TF_VAR_postgres_db="${TF_VAR_postgres_db}" \
-    -e TF_VAR_postgres_user="${TF_VAR_postgres_user}" \
-    -e TF_VAR_postgres_password="${TF_VAR_postgres_password}" \
-    -e TF_VAR_algorithm="${TF_VAR_algorithm}" \
-    -e TF_VAR_access_token_expire_minutes="${TF_VAR_access_token_expire_minutes}" \
     hashicorp/terraform:latest plan
 '''
+                }
             }
         }
-    }
-}
     }
 
     post {
