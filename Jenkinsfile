@@ -15,17 +15,22 @@ pipeline {
             }
         }
 
+        stage('Debug') {
+    steps {
+        sh 'ls -la ${WORKSPACE}/terraform'
+    }
+}
+
         stage('Infrastructure Security Scan') {
             steps {
                 echo "Running Trivy security scan on Terraform files..."
                 script {
                     // Mount the terraform folder directly into the Trivy container
                     sh """
-                    docker run --rm \
-                        -v ${WORKSPACE_DIR}/terraform:/terraform \
-                        aquasec/trivy:latest config \
-                        --severity HIGH,CRITICAL \
-                        --format table /terraform
+                   docker run --rm \
+    -u $(id -u):$(id -g) \
+    -v ${WORKSPACE}/terraform:/terraform \
+    aquasec/trivy:latest config --severity HIGH,CRITICAL --format table /terraform
                     """
                 }
             }
@@ -38,14 +43,16 @@ pipeline {
                     // Mount the terraform folder directly and set working directory to /terraform
                     sh """
                     docker run --rm \
-                        -v ${WORKSPACE_DIR}/terraform:/terraform \
-                        -w /terraform \
-                        hashicorp/terraform:latest init
+    -u $(id -u):$(id -g) \
+    -v ${WORKSPACE}/terraform:/terraform \
+    -w /terraform \
+    hashicorp/terraform:latest init
 
-                    docker run --rm \
-                        -v ${WORKSPACE_DIR}/terraform:/terraform \
-                        -w /terraform \
-                        hashicorp/terraform:latest plan
+                   docker run --rm \
+    -u $(id -u):$(id -g) \
+    -v ${WORKSPACE}/terraform:/terraform \
+    -w /terraform \
+    hashicorp/terraform:latest plan
                     """
                 }
             }
