@@ -120,7 +120,7 @@ resource "aws_security_group" "app_sg" {
 }
 
 resource "aws_secretsmanager_secret" "backend_env" {
-  name = "bus-booking/backend-env-v6"
+  name = "bus-booking/backend-env-v7"
   recovery_window_in_days = 0  # allows force-delete on future terraform destroy
 }
 

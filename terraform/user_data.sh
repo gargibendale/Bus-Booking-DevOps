@@ -19,7 +19,7 @@ usermod -aG docker ubuntu
 # Install the AWS CLI (needed to talk to Secrets Manager)
 apt-get install -y awscli jq
 
-SECRET=$(aws secretsmanager get-secret-value --secret-id "bus-booking/backend-env-v6" --region eu-north-1 --query SecretString --output text)
+SECRET=$(aws secretsmanager get-secret-value --secret-id "bus-booking/backend-env-v7" --region eu-north-1 --query SecretString --output text)
 
 # Create app directory
 mkdir -p /home/ubuntu/bus-booking
