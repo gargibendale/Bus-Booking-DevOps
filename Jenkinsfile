@@ -32,12 +32,7 @@ pipeline {
     echo "Running Trivy security scan on Terraform files..."
 
     sh """
-        docker run --rm \
-            -v ${WORKSPACE}:/project \
-            aquasec/trivy:latest config \
-            --severity HIGH,CRITICAL \
-            --format table \
-            /project/${TF_DIR} > trivy-report.txt 2>&1 || true
+        docker run --rm -v /var/jenkins_home/workspace/devops-pipeline/terraform:/project aquasec/trivy:latest config --severity HIGH,CRITICAL --format table /project
     """
 
     def scanResult = readFile('trivy-report.txt').trim()
@@ -65,17 +60,11 @@ pipeline {
         script {
 
             sh """
-            docker run --rm \
-            -v ${WORKSPACE}:/workspace \
-            -w /workspace/terraform \
-            hashicorp/terraform:latest init
+            docker run --rm -v /var/jenkins_home/workspace/devops-pipeline/terraform:/workspace hashicorp/terraform:latest init
             """
 
             sh """
-            docker run --rm \
-            -v ${WORKSPACE}:/workspace \
-            -w /workspace/terraform \
-            hashicorp/terraform:latest plan
+            docker run --rm -v /var/jenkins_home/workspace/devops-pipeline/terraform:/workspace hashicorp/terraform:latest plan
             """
         }
     }
