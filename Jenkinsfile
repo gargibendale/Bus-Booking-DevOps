@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        // Workspace inside Jenkins
-        WORKSPACE_DIR = "${env.WORKSPACE}"
+        // This is the host path passed in from docker-compose
+        HOST_WORKSPACE = "${env.HOST_WORKSPACE}/${env.JOB_NAME}"
     }
 
     stages {
@@ -16,20 +16,21 @@ pipeline {
         }
 
         stage('Debug') {
-    steps {
-        sh 'ls -la ${WORKSPACE}/terraform'
-    }
-}
+            steps {
+                // Verify both paths so you can compare
+                sh 'echo "Jenkins path: ${WORKSPACE}"'
+                sh 'echo "Host path: ${HOST_WORKSPACE}"'
+                sh 'ls -la ${WORKSPACE}/terraform'
+            }
+        }
 
         stage('Infrastructure Security Scan') {
             steps {
                 echo "Running Trivy security scan on Terraform files..."
                 script {
-                    // Mount the terraform folder directly into the Trivy container
-                   sh '''
+                    sh '''
 docker run --rm \
-    -u $(id -u):$(id -g) \
-    -v ${WORKSPACE}/terraform:/terraform \
+    -v ${HOST_WORKSPACE}/terraform:/terraform \
     aquasec/trivy:latest config --severity HIGH,CRITICAL --format table /terraform
 '''
                 }
@@ -40,20 +41,17 @@ docker run --rm \
             steps {
                 echo "Initializing Terraform and creating plan..."
                 script {
-                    // Mount the terraform folder directly and set working directory to /terraform
                     sh '''
-        docker run --rm \
-            -u $(id -u):$(id -g) \
-            -v ${WORKSPACE}/terraform:/terraform \
-            -w /terraform \
-            hashicorp/terraform:latest init
+docker run --rm \
+    -v ${HOST_WORKSPACE}/terraform:/terraform \
+    -w /terraform \
+    hashicorp/terraform:latest init
 
-        docker run --rm \
-            -u $(id -u):$(id -g) \
-            -v ${WORKSPACE}/terraform:/terraform \
-            -w /terraform \
-            hashicorp/terraform:latest plan
-        '''
+docker run --rm \
+    -v ${HOST_WORKSPACE}/terraform:/terraform \
+    -w /terraform \
+    hashicorp/terraform:latest plan
+'''
                 }
             }
         }

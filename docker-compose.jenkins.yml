@@ -11,8 +11,8 @@ services:
     ports:
       - "8080:8080"
       - "50000:50000"
-
+    environment:
+      - HOST_WORKSPACE=/c/bus-app-copy/jenkins_home/workspace
     volumes:
-      - ./jenkins_home:/var/jenkins_home
-      - ./workspace:/var/jenkins_home/workspace
+      - /c/bus-app-copy/jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
