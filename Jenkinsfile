@@ -16,6 +16,9 @@ pipeline {
                 // Jenkins automatically checks out your repo here
                 // because the pipeline is linked to it (configured in Step 5)
                 checkout scm
+                sh 'ls -la'              // Show root of workspace
+        sh 'ls -la terraform/'   // Show terraform folder contents
+        echo "Code checked out successfully"
                 echo "Code checked out successfully"
             }
         }
@@ -71,6 +74,11 @@ pipeline {
             steps {
                 script {
                     echo "Running Terraform plan..."
+
+                    // Debug: show what Jenkins actually has
+            sh 'pwd'
+            sh 'ls -la'
+            sh 'ls -la ${TF_DIR} || echo "terraform folder not found!"'
 
                     // Run terraform init + plan inside a terraform Docker container
                     // This avoids needing Terraform installed on Jenkins itself
