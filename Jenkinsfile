@@ -47,8 +47,6 @@ docker run --rm \
     string(credentialsId: 'TF_VAR_postgres_password', variable: 'POSTGRES_PASSWORD'),
     string(credentialsId: 'TF_VAR_secret_key',        variable: 'SECRET_KEY'),
 ]) {
-
-{
                 script {
                     sh '''
 docker run --rm \
