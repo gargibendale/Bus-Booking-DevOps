@@ -13,7 +13,7 @@ password = urllib.parse.quote_plus(os.getenv("POSTGRES_PASSWORD"))
 db_name = urllib.parse.quote_plus(os.getenv("POSTGRES_DB"))
 
 DATABASE_URL = (
-    f"postgresql+psycopg2://{username}:{password}@{db_host}/{db_name}?sslmode=disable"
+    f"postgresql+psycopg2://{username}:{password}@{db_host}/{db_name}?sslmode=require"
 )
 
 engine = create_engine(DATABASE_URL)

@@ -14,6 +14,10 @@ FROM nginx:alpine
 
 COPY --from=builder /app/dist/bus-booking/browser /usr/share/nginx/html
 
+#use this when running locally -->
+# COPY nginx.conf /etc/nginx/nginx.conf
+
+#use this when running on cloud -->
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
