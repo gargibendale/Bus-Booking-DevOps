@@ -65,7 +65,7 @@ resource "aws_route_table_association" "public" {
 # ── SECURITY GROUP (INTENTIONALLY VULNERABLE) ───────────────
 
 # Security Group: A virtual firewall controlling inbound/outbound traffic
-# ⚠️  INTENTIONAL VULNERABILITY: SSH port 22 is open to the entire internet (0.0.0.0/0)
+# ⚠️  INTENTIONAL VULNERABILITY: SSH port 22 is open to the entire internet (0.0.0.0/0) (now removed)
 # This is the flaw Trivy will detect, and AI will help fix later
 resource "aws_security_group" "app_sg" {
   name        = "${var.app_name}-sg"
@@ -112,7 +112,7 @@ resource "aws_security_group" "app_sg" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [var.trusted_ssh_cidr]
   }
 
   # HTTP (80) — for package installs (apt, pip)
@@ -121,7 +121,7 @@ resource "aws_security_group" "app_sg" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [var.trusted_ssh_cidr]
   }
 
   # DNS (53) — required for hostname resolution
@@ -130,7 +130,7 @@ resource "aws_security_group" "app_sg" {
     from_port   = 53
     to_port     = 53
     protocol    = "udp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [var.trusted_ssh_cidr]
   }
 
   tags = {
