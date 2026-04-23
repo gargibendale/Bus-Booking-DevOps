@@ -1,16 +1,16 @@
-# 🚌 BusBooking — DevSecOps Deployment
+# BusBooking — DevSecOps Deployment
 
 A full-stack bus booking web application deployed to AWS using Docker, Terraform, and a Jenkins CI/CD pipeline with integrated security scanning via Trivy.
 
 ---
 
-## 🌐 Live Application
+## Live Application
 
 The application is accessible at: `http://13.53.37.117`
 
 ---
 
-## 📋 Project Overview
+## Project Overview
 
 This project demonstrates a complete DevSecOps workflow — from containerizing a multi-service application, to provisioning secure cloud infrastructure with Terraform, to automating deployments through a Jenkins pipeline with AI-assisted security remediation.
 
@@ -21,19 +21,19 @@ The application allows users to browse and book bus tickets. It is composed of t
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
-                        ┌─────────────────────────────────────────┐
-                        │              AWS Cloud (EC2)             │
-                        │                                          │
+                        ┌────────────────────────────────────────┐
+                        │              AWS Cloud (EC2)           │
+                        │                                        │
   User ──── HTTPS ────► │  ┌─────────────┐    ┌───────────────┐  │
                         │  │   Frontend  │    │    Backend    │  │
                         │  │  Angular +  │───►│   FastAPI     │  │
                         │  │    Nginx    │    │  (REST API)   │  │
                         │  └─────────────┘    └──────┬────────┘  │
-                        │                            │            │
-                        └────────────────────────────┼────────────┘
+                        │                            │           │
+                        └────────────────────────────┼───────────┘
                                                      │
                                               ┌──────▼──────┐
                                               │   AWS RDS   │
@@ -49,7 +49,7 @@ The application allows users to browse and book bus tickets. It is composed of t
 
 ---
 
-## ☁️ Cloud Provider
+## Cloud Provider
 
 **Amazon Web Services (AWS)**
 
@@ -62,7 +62,7 @@ The application allows users to browse and book bus tickets. It is composed of t
 
 ---
 
-## 🛠️ Tools & Technologies
+## Tools & Technologies
 
 ### Application
 | Tool | Role |
@@ -92,7 +92,7 @@ The application allows users to browse and book bus tickets. It is composed of t
 
 ---
 
-## 🔁 Jenkins Pipeline
+## Jenkins Pipeline
 
 The pipeline consists of three stages:
 
@@ -110,7 +110,7 @@ The pipeline consists of three stages:
 
 ---
 
-## 🔐 Security Remediation (AI-Assisted)
+## Security Remediation (AI-Assisted)
 
 The Terraform code was initially written with an **intentional vulnerability**: SSH port 22 open to `0.0.0.0/0`, exposing the EC2 instance to the entire internet.
 
@@ -133,7 +133,7 @@ The Terraform code was initially written with an **intentional vulnerability**: 
 
 ---
 
-## 🚀 Running Locally
+## Running Locally
 
 ### Prerequisites
 - Docker & Docker Compose installed
@@ -157,7 +157,7 @@ terraform apply
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```
 .
@@ -178,21 +178,20 @@ terraform apply
 
 ---
 
-## 🤖 AI Usage Log
+## AI Usage Log
 
 **Tool used:** Claude (Anthropic)
 
 **Prompt provided:**
-> *"You are a senior cloud security engineer. I ran a Trivy infrastructure security scan on my Terraform code (main.tf) and received the following vulnerability report (check attachment).
-
-My main.tf is (check attachment)
-
-Please do the following:
-1. Explain each vulnerability in simple terms — what is the risk and what could an attacker do if it were exploited?
-2. Rewrite only the affected blocks in my main.tf to fix each vulnerability, following AWS security best practices.
-3. Summarize the before vs. after changes in a table format.
-Ensure the fixed code has zero CRITICAL or HIGH severity issues when re-scanned.
-"*
+> "You are a senior cloud security engineer. I ran a Trivy infrastructure security scan on my Terraform code (main.tf) and received the following vulnerability report (check attachment).
+>
+> My main.tf is (check attachment)
+>
+> Please do the following:
+>  1. Explain each vulnerability in simple terms - what is the risk and what could an attacker do if it were exploited?
+>  2. Rewrite only the affected blocks in my main.tf to fix each vulnerability, following AWS security best practices.
+>  3. Summarize the before vs. after changes in a table format.
+>  Ensure the fixed code has zero CRITICAL or HIGH severity issues when re-scanned."
 
 **Outcome:**
 - The updated Terraform code passed the Trivy scan with zero critical findings on the re-run of the Jenkins pipeline.
