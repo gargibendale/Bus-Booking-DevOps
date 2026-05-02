@@ -4,12 +4,6 @@ A full-stack bus booking web application deployed to AWS using Docker, Terraform
 
 ---
 
-## Live Application
-
-The application is accessible at: `http://13.53.37.117`
-
----
-
 ## Project Overview
 
 This project demonstrates a complete DevSecOps workflow — from containerizing a multi-service application, to provisioning secure cloud infrastructure with Terraform, to automating deployments through a Jenkins pipeline with AI-assisted security remediation.
