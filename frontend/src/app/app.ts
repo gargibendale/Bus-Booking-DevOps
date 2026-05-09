@@ -20,6 +20,12 @@ export class App {
   user: any;
   constructor(public userService: UserService, private router: Router) { }
 
+  menuOpen = false;
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+
   logout() {
     this.userService.logout();
     this.router.navigate(['/']);

@@ -111,3 +111,56 @@
     grid-template-rows: repeat(5, 1fr);
     gap: 6px;
 }
+
+/* ── Responsive: tablet & mobile ── */
+@media (max-width: 768px) {
+    .bus-container {
+        width: 100%;
+        padding: 12px;
+        overflow-x: auto;
+        /* fallback for very small screens */
+    }
+
+    .bus-body {
+        flex-direction: column;
+        /* driver stacks above seats */
+        align-items: center;
+        gap: 10px;
+    }
+
+    .seat-layout-horizontal {
+        flex-direction: column;
+        /* columns become rows */
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .seat-column {
+        flex-direction: row;
+        /* each "column" now lays out horizontally */
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .seat-pair.vertical {
+        grid-template-rows: unset;
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 seats side by side */
+        gap: 6px;
+    }
+
+    .aisle-vertical {
+        width: 8px;
+        /* thin vertical divider between seat pairs */
+        height: 38px;
+        /* match seat height */
+    }
+
+    .last-column {
+        grid-template-rows: unset;
+        grid-template-columns: repeat(5, 1fr);
+        /* all 5 back seats in a row */
+        gap: 6px;
+    }
+}

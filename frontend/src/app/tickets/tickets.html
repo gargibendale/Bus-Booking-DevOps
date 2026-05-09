@@ -1,56 +1,51 @@
 <div class="tickets-container">
 
   @if (loading) {
-    <div class="state-text">Loading tickets…</div>
+  <div class="state-text">Loading tickets…</div>
   }
 
   @if (error) {
-    <div class="state-text error">{{ error }}</div>
+  <div class="state-text error">{{ error }}</div>
   }
 
-  @if (!loading && tickets.length === 0) {
-    <div class="state-text">
+  @if (!loading && !error) {
+  <div class="page-header">
+    <h1 class="page-title">My Tickets</h1>
+    <p class="page-sub">
+      @if (tickets.length > 0) {
+      {{ tickets.length }} booking{{ tickets.length === 1 ? '' : 's' }}
+      } @else {
       No bookings found
-    </div>
+      }
+    </p>
+  </div>
   }
 
-  @for (ticket of tickets; track ticket.ticket_id) {
-    <div
-      class="ticket-card"
-      (click)="openTicket(ticket)"
-    >
-      <!-- Left section -->
-      <div class="ticket-left">
-        <div class="route">{{ ticket.route }}</div>
+  @if (!loading && tickets.length > 0) {
+  <div class="ticket-list">
+    @for (ticket of tickets; track ticket.ticket_id) {
+    <div class="ticket-row {{ ticket.status.toLowerCase() }}" (click)="openTicket(ticket)">
+      <div class="ticket-main">
+        <div class="ticket-route">{{ ticket.route }}</div>
 
-        <div class="meta">
-          <span>
-            Travel:
-            {{ ticket.travel_date | date: 'dd MMM yyyy' }}
-          </span>
-          <span>
-            Booked:
-            {{ ticket.booking_time | date: 'dd MMM yyyy, hh:mm a' }}
-          </span>
+        <div class="ticket-meta">
+          <span>Travel: {{ ticket.travel_date | date: 'dd MMM yyyy' }}</span>
+          <span>Booked: {{ ticket.booking_time | date: 'dd MMM yyyy, hh:mm a' }}</span>
         </div>
 
-        <div class="ticket-id">
-          Ticket ID: {{ ticket.ticket_id }}
-        </div>
+        <div class="ticket-id">Ticket #{{ ticket.ticket_id }}</div>
       </div>
 
-      <!-- Right section -->
-      <div class="ticket-right">
-        <div class="amount">₹{{ ticket.amt_paid }}</div>
-
-        <div
-          class="status"
-          [ngClass]="ticket.status.toLowerCase()"
-        >
-          {{ ticket.status }}
+      <div class="ticket-aside">
+        <div class="ticket-amount">₹{{ ticket.amt_paid }}</div>
+        <div class="status-badge">
+          <span class="status-dot {{ ticket.status.toLowerCase() }}"></span>
+          <span class="status-text {{ ticket.status.toLowerCase() }}">{{ ticket.status }}</span>
         </div>
       </div>
     </div>
+    }
+  </div>
   }
 
 </div>

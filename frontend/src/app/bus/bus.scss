@@ -8,16 +8,28 @@
     margin-bottom: 16px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    // ✅ ADD: stack vertically on mobile
+    @media (max-width: 600px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+    }
 }
 
-.bus-card:hover {
+// fix: was `.bus-card:hover` — changed to match the actual element
+.bus-search-result:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
 }
 
-/* LEFT SECTION */
 .bus-left {
     flex: 2;
+
+    // ✅ ADD: full width when stacked
+    @media (max-width: 600px) {
+        width: 100%;
+    }
 }
 
 .route {
@@ -30,6 +42,11 @@
     display: flex;
     align-items: center;
     gap: 24px;
+
+    // ✅ ADD: reduce gap on very small screens
+    @media (max-width: 400px) {
+        gap: 12px;
+    }
 }
 
 .time {
@@ -56,10 +73,17 @@
     margin: 4px auto;
 }
 
-/* MIDDLE SECTION */
 .bus-middle {
     flex: 1;
     text-align: center;
+
+    // ✅ ADD: left-align and add a top divider when stacked
+    @media (max-width: 600px) {
+        width: 100%;
+        text-align: left;
+        padding-top: 10px;
+        border-top: 1px solid #eee;
+    }
 }
 
 .seats {
@@ -72,16 +96,29 @@
     color: #777;
 }
 
-/* RIGHT SECTION */
 .bus-right {
     flex: 1;
     text-align: right;
+
+    // ✅ ADD: full-width row with price + button side-by-side
+    @media (max-width: 600px) {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 10px;
+        border-top: 1px solid #eee;
+    }
 }
 
 .price {
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 8px;
+
+    @media (max-width: 600px) {
+        margin-bottom: 0;
+    }
 }
 
 .details-btn {

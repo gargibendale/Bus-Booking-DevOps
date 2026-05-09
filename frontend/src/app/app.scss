@@ -88,3 +88,79 @@ button.secondary {
 button.secondary:hover {
     background: rgba(112, 72, 232, 0.08);
 }
+
+// Hamburger button — hidden on desktop, visible on mobile
+.hamburger-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 38px;
+    height: 38px;
+    background: transparent;
+    border: 1px solid rgba(112, 72, 232, 0.3);
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.2s ease;
+
+    &:hover {
+        background: rgba(112, 72, 232, 0.08);
+    }
+
+    .bar {
+        display: block;
+        width: 18px;
+        height: 2px;
+        background: var(--primary-color);
+        border-radius: 2px;
+        transition: transform 0.25s ease, opacity 0.2s ease;
+    }
+
+    // Animate bars into an X when menu is open
+    &[aria-expanded="true"] {
+        .bar:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .bar:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    .hamburger-btn {
+        display: flex; // show the button on mobile
+    }
+
+    .login-signup {
+        // Remove from normal flow; stack vertically below the header
+        display: none;
+        position: absolute;
+        top: 100%; // anchors to the bottom edge of the sticky header
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        padding: 12px 20px;
+        gap: 10px;
+        background: rgba(255, 255, 255, 0.97);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        z-index: 9;
+
+        &.open {
+            display: flex; // show when toggled
+        }
+
+        button.primary {
+            width: 100%; // full-width buttons in mobile menu
+        }
+    }
+}
